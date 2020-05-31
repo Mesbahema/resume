@@ -8,6 +8,14 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    //------------------------------------defining enums---------------------------------//
+    const USER = "user";
+    const ADMIN = "admin";
+    const ROLES = [
+        self::USER,
+        self::ADMIN
+    ];
+
     use Notifiable;
 
     /**
@@ -16,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'user_name', 'email', 'birth_date', 'password'
     ];
 
     /**
