@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @method static create(array $array)
+ */
 class User extends Authenticatable
 {
     //------------------------------------defining enums---------------------------------//
@@ -24,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'user_name', 'email', 'birth_date', 'password'
+        'first_name', 'last_name', 'user_name', 'email', 'birth_date', 'role', 'password'
     ];
 
     /**
@@ -44,4 +47,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    //------------------------------------Relations---------------------------------//
+
+    public function resume()
+    {
+        return $this->hasMany(Resume::class, 'uploader_id');
+    }
 }

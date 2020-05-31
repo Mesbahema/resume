@@ -24,6 +24,12 @@ class CreateResumesTable extends Migration
                   ->on('users')
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
+            $table->unsignedBigInteger('job_id');
+            $table->foreign('job_id')
+                ->references('id')
+                ->on('jobs')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

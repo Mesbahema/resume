@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('user_name');
             $table->string('email')->unique();
-            $table->dateTime('birth_date');
+            $table->date('birth_date');
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', \App\User::ROLES);
             $table->string('password');
