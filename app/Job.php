@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Job
  * @package App
  *
- *
+ * @property string title
  *
  *
  */

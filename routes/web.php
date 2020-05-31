@@ -28,4 +28,4 @@ Route::post('job','JobController@store');
 
 Route::post('resume/{id}/comment','CommentController@store');
 
-
+Route::get('user/{user}','UserController@show');
