@@ -8,6 +8,15 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * @method static create(array $array)
+ * @property int id
+ *
+ *@property string first_name
+ *@property string last_name
+ *@property string user_name
+ *@property string email
+ *
+ * @property Resume[] resumes
+ * @property Comment[] comments
  */
 class User extends Authenticatable
 {
@@ -49,8 +58,12 @@ class User extends Authenticatable
     ];
     //------------------------------------Relations---------------------------------//
 
-    public function resume()
+    public function resumes()
     {
         return $this->hasMany(Resume::class, 'uploader_id');
+    }
+    public function comments()
+    {
+        return $this->belongsTo(Comment::class, 'user_id');
     }
 }

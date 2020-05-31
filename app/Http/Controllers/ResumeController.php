@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Job;
 use App\Resume;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ResumeController extends Controller
 {
@@ -22,20 +25,43 @@ class ResumeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
+
+//        return response()->download('storage/resumes/' . $uuid);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+//     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'file' => 'required|file|mimes:pdf',
+            'job' => 'required|string|max:255'
+        ]);
+        $job_id = Job::where('title', $request->job)->first()->id;
+        if (Auth::user()->resume()->where('job_id',$job_id)->first()) {
+            return response()->json([
+                'message' => 'قبلا برای این شغل رزومه فرستادید',
+                'status' => '423'
+            ]);
+        }
+        $user_id = Auth::user()->id;
+        $uuid = Str::uuid()->toString();
+
+        $request->file('file')->storeAs('public/resumes', $uuid);
+        $resume = new Resume();
+        $resume->path = $uuid;
+        $resume->status = Resume::SENDING;
+        $resume->is_chat_enable = true;
+        $resume->job()->associate($job_id);
+        $resume->uploader()->associate($user_id);
+        $resume->save();
     }
 
     /**
@@ -46,7 +72,8 @@ class ResumeController extends Controller
      */
     public function show(Resume $resume)
     {
-        //
+        $path = $resume->path;
+        return response()->download('storage/resumes/' . $path);
     }
 
     /**

@@ -22,6 +22,13 @@ class CreateCommentsTable extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->unsignedBigInteger('resume_id');
+            $table->foreign('resume_id')
+                ->references('id')
+                ->on('resumes')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            # I was looking at your database codes.
             $table->timestamps();
         });
     }
